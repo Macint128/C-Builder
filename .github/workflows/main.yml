@@ -14,11 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Compile C code
-        run: |
-          mkdir -p app/Contents/MacOS
-          clang -o app/Contents/MacOS/launcher C/launcher.c
-          chmod +x app/Contents/MacOS/launcher
+        - name: Compile C code
+          run: |
+            mkdir -p app/Contents/MacOS
+            clang -arch x86_64 -arch arm64 -o app/Contents/MacOS/launcher C/launcher.c
+            chmod +x app/Contents/MacOS/launcher
 
       - name: Upload compiled app
         uses: actions/upload-artifact@v4
