@@ -1,0 +1,25 @@
+name: Stabilize App
+
+on:
+  workflow_dispatch:
+
+jobs:
+  stabilize:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Place uploaded .app from iPhone
+        run: |
+          mkdir -p app
+          unzip App-Build.zip -d app
+          chmod -R +x app/*.app/Contents/MacOS/*
+          xattr -dr com.apple.quarantine app/*.app
+
+      - name: Upload stabilized app
+        uses: actions/upload-artifact@v4
+        with:
+          name: App-Stabilized
+          path: app
