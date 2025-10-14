@@ -17,7 +17,7 @@ jobs:
       - name: Compile C code
         run: |
           mkdir -p app/Contents/MacOS
-          clang -arch x86_64 -arch arm64 -o app/Contents/MacOS/launcher C/launcher.c
+          clang -arch arm64 -mmacosx-version-min=11.0 -o app/Contents/MacOS/launcher C/launcher.c
           chmod +x app/Contents/MacOS/launcher
 
       - name: Upload compiled app
