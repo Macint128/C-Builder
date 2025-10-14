@@ -1,6 +1,5 @@
 #import <Cocoa/Cocoa.h>
 
-// 버튼 클릭 액션 처리용 클래스
 @interface ButtonHandler : NSObject
 - (void)sayHello:(id)sender;
 @end
@@ -16,7 +15,26 @@
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         NSApplication *app = [NSApplication sharedApplication];
-        
+
+        // -----------------------------
+        // 메뉴바 생성 (커맨드+Q 활성화)
+        // -----------------------------
+        NSMenu *mainMenu = [[NSMenu alloc] init];
+        NSMenuItem *appMenuItem = [[NSMenuItem alloc] init];
+        [mainMenu addItem:appMenuItem];
+        [app setMainMenu:mainMenu];
+
+        NSMenu *appMenu = [[NSMenu alloc] init];
+        NSString *appName = [[NSProcessInfo processInfo] processName];
+        NSMenuItem *quitItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"Quit %@", appName]
+                                                          action:@selector(terminate:)
+                                                   keyEquivalent:@"q"];
+        [appMenu addItem:quitItem];
+        [appMenuItem setSubmenu:appMenu];
+
+        // -----------------------------
+        // 윈도우 생성
+        // -----------------------------
         NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0,0,300,150)
                                                        styleMask:(NSWindowStyleMaskTitled |
                                                                   NSWindowStyleMaskClosable |
@@ -26,7 +44,6 @@ int main(int argc, const char * argv[]) {
         [window setTitle:@"준호의 예제"];
         [window center];
 
-        // 버튼 처리 객체
         ButtonHandler *handler = [[ButtonHandler alloc] init];
 
         // 버튼 1
