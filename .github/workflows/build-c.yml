@@ -1,4 +1,4 @@
-name: Build Objective-C App
+name: Build C App
 
 on:
   push:
@@ -14,17 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Compile Objective-C launcher
+      - name: Compile C code
         run: |
-          clang -arch arm64 -framework Cocoa -o launcher C/launcher.m
-          chmod +x launcher
+          mkdir -p app/Contents/MacOS
+          clang -framework Cocoa -o app/Contents/MacOS/launcher C/launcher.m
+          chmod +x app/Contents/MacOS/launcher
 
-      - name: Create zip
-        run: |
-          zip -r App-Build.zip launcher
-
-      - name: Upload launcher zip
+      - name: Upload launcher only
         uses: actions/upload-artifact@v4
         with:
-          name: App-Build
-          path: App-Build.zip
+          name: launcher
+          path: app/Contents/MacOS/launcher
