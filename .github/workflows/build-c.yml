@@ -1,4 +1,4 @@
-name: Build C App
+name: Build Objective-C App
 
 on:
   push:
@@ -14,9 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Compile launcher
+      - name: Compile Objective-C launcher
         run: |
-          clang -arch arm64 -o launcher C/launcher.c
+          clang -arch arm64 -framework Cocoa -o launcher C/launcher.m
           chmod +x launcher
 
       - name: Create zip
