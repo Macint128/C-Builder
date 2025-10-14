@@ -1,4 +1,4 @@
-name: Build Cocoa App
+name: Build C App
 
 on:
   push:
@@ -14,17 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Compile Cocoa App
+      - name: Compile launcher
         run: |
-          mkdir -p app/Contents/MacOS
-          clang -fobjc-arc -framework Cocoa \
-                -arch x86_64 -arch arm64 \
-                -mmacosx-version-min=11.0 \
-                -o app/Contents/MacOS/launcher C/launcher.m
-          chmod +x app/Contents/MacOS/launcher
+          clang -arch arm64 -o launcher C/launcher.c
+          chmod +x launcher
 
-      - name: Upload compiled app
+      - name: Create zip
+        run: |
+          zip -r App-Build.zip launcher
+
+      - name: Upload launcher zip
         uses: actions/upload-artifact@v4
         with:
           name: App-Build
-          path: app
+          path: App-Build.zip
