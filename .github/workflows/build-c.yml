@@ -1,11 +1,9 @@
-name: Build C App
+name: Build Cocoa App
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'C/**'   # C 폴더만 변경될 때 실행
   workflow_dispatch:
 
 jobs:
@@ -16,12 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Compile C code (Universal Binary)
+      - name: Compile Cocoa App (Universal Binary)
         run: |
           mkdir -p app/Contents/MacOS
-          clang -arch x86_64 -arch arm64 -mmacosx-version-min=11.0 \
-            -o app/Contents/MacOS/launcher C/launcher.c
-          chmod +x app/Contents/MacOS/launcher
+          clang -fobjc-arc -framework Cocoa \
+                -arch x86_64 -arch arm64 \
+                -mmacosx-version-min=11.0 \
+                -o app/Contents/MacOS/MyApp main.m
+          chmod +x app/Contents/MacOS/MyApp
 
       - name: Upload compiled app
         uses: actions/upload-artifact@v4
