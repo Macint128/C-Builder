@@ -1,4 +1,4 @@
-name: Build C App
+name: Build and Compile C Code
 
 on:
   push:
@@ -12,16 +12,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Compile C code
         run: |
           mkdir -p app/Contents/MacOS
-          clang -o app/Contents/MacOS/launcher C/launcher.c
+          clang -o app/Contents/MacOS/launcher app/Contents/MacOS/launcher.c
           chmod +x app/Contents/MacOS/launcher
 
       - name: Upload compiled app
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: App-Build
           path: app/Contents/MacOS/launcher
