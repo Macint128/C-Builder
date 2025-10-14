@@ -1,4 +1,4 @@
-name: Build and Compile C Code
+name: Build C App
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
       - name: Compile C code
         run: |
           mkdir -p app/Contents/MacOS
-          clang -o app/Contents/MacOS/launcher app/Contents/MacOS/launcher.c
+          clang -o app/Contents/MacOS/launcher C/launcher.c
           chmod +x app/Contents/MacOS/launcher
 
       - name: Upload compiled app
