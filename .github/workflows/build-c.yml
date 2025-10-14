@@ -14,12 +14,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Compile Cocoa App (Universal Binary)
+      - name: Compile Cocoa App
         run: |
           mkdir -p app/Contents/MacOS
-          clang -arch x86_64 -arch arm64 -mmacosx-version-min=11.0 \
-                -o app/Contents/MacOS/launcher C/launcher.c
+          clang -fobjc-arc -framework Cocoa \
+                -arch x86_64 -arch arm64 \
+                -mmacosx-version-min=11.0 \
+                -o app/Contents/MacOS/launcher C/launcher.m
           chmod +x app/Contents/MacOS/launcher
+
       - name: Upload compiled app
         uses: actions/upload-artifact@v4
         with:
