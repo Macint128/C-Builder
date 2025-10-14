@@ -14,14 +14,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Compile C code
+      - name: Compile C code (Universal Binary)
         run: |
           mkdir -p app/Contents/MacOS
-          clang -arch arm64 -mmacosx-version-min=11.0 -o app/Contents/MacOS/launcher C/launcher.c
+          clang -arch arm64 -arch x86_64 -mmacosx-version-min=11.0 -o app/Contents/MacOS/launcher C/launcher.c
           chmod +x app/Contents/MacOS/launcher
+
+      - name: Add Info.plist
+        run: |
+          mkdir -p app/Contents
+          cp ~/Documents/info/Info.plist app/Contents/Info.plist
+
+      - name: Remove macOS quarantine attribute
+        run: |
+          xattr -cr app
+          echo "Removed quarantine attributes ✅"
+
+      - name: Disable code signing (skip signing)
+        run: |
+          codesign --force --deep --sign - app/Contents/MacOS/launcher
+          echo "Unsigned app ready to run 🚀"
+
+      - name: Zip the app for export
+        run: |
+          cd app
+          zip -r ../App-Build.zip .
+          cd ..
+          echo "Zipped App-Build.zip ✅"
 
       - name: Upload compiled app
         uses: actions/upload-artifact@v4
         with:
           name: App-Build
-          path: app/Contents/MacOS/launcher
+          path: App-Build.zip
