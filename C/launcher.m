@@ -2,46 +2,55 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 @property (strong) NSWindow *window;
+@property (strong) NSTextField *label;
 @end
 
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    // 윈도우 생성
-    self.window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 300, 200)
+    // 1. 윈도우 생성
+    self.window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 400, 200)
                                               styleMask:(NSWindowStyleMaskTitled |
                                                          NSWindowStyleMaskClosable |
                                                          NSWindowStyleMaskResizable)
                                                 backing:NSBackingStoreBuffered
                                                   defer:NO];
-    [self.window setTitle:@"Hello Cocoa"];
+    [self.window setTitle:@"Cocoa Example"];
     [self.window center];
-
-    // 버튼 생성
-    NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(100, 80, 100, 40)];
+    
+    // 2. 버튼 생성
+    NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(150, 100, 100, 30)];
     [button setTitle:@"Click Me"];
     [button setButtonType:NSButtonTypeMomentaryPushIn];
     [button setBezelStyle:NSBezelStyleRounded];
-
-    // 버튼 액션
     [button setTarget:self];
     [button setAction:@selector(buttonClicked:)];
-
     [self.window.contentView addSubview:button];
+    
+    // 3. 라벨 생성
+    self.label = [[NSTextField alloc] initWithFrame:NSMakeRect(100, 50, 200, 30)];
+    [self.label setStringValue:@""];
+    [self.label setBezeled:NO];
+    [self.label setDrawsBackground:NO];
+    [self.label setEditable:NO];
+    [self.label setSelectable:NO];
+    [self.label setAlignment:NSTextAlignmentCenter];
+    [self.window.contentView addSubview:self.label];
+    
     [self.window makeKeyAndOrderFront:nil];
 }
 
-// 버튼 클릭 시 호출
+// 버튼 클릭 시 동작
 - (void)buttonClicked:(id)sender {
-    NSLog(@"🎉 Hello, Cocoa World!");
+    [self.label setStringValue:@"Hello, World!"];
 }
 
 @end
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        AppDelegate *delegate = [[AppDelegate alloc] init];
         NSApplication *app = [NSApplication sharedApplication];
+        AppDelegate *delegate = [[AppDelegate alloc] init];
         [app setDelegate:delegate];
         [app run];
     }
