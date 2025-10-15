@@ -1,0 +1,29 @@
+name: Build Windows GUI EXE
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up MSYS2 for GCC
+        uses: msys2/setup-msys2@v4
+        with:
+          update: true
+
+      - name: Build GUI EXE
+        run: |
+          mkdir build
+          gcc C/dummy.c -o build/dummy.exe -mwindows
+
+      - name: Upload build artifact as ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: dummy-gui-exe
+          path: build/dummy.exe
+          retention-days: 1
