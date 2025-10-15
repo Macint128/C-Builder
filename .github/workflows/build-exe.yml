@@ -11,14 +11,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # msys2/setup-msys2 최신 v4 릴리즈 직접 지정
       - name: Set up MSYS2 for GCC
-        uses: msys2/setup-msys2@v4
+        uses: msys2/setup-msys2@4.0.0
         with:
           update: true
 
       - name: Build GUI EXE
         run: |
-          mkdir build
+          mkdir -p build
           gcc C/dummy.c -o build/dummy.exe -mwindows
 
       - name: Upload build artifact as ZIP
@@ -26,4 +27,3 @@ jobs:
         with:
           name: dummy-gui-exe
           path: build/dummy.exe
-          retention-days: 1
